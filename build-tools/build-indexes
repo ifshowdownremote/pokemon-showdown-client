@@ -9,7 +9,7 @@ const rootDir = path.resolve(__dirname, '..');
 process.chdir(rootDir);
 
 if (!fs.existsSync('data/pokemon-showdown')) {
-	child_process.execSync('git clone https://github.com/Pellevoisin/pokemon-showdown.git', {
+	child_process.execSync('git clone https://github.com/ifshowdownremote/pokemon-showdown.git', {
 		cwd: 'data',
 	});
 }
@@ -828,39 +828,40 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			if (gens.indexOf(8) >= 0) learnsets[id][moveid] += 'g';
 		}
 	}
-	const G2Learnsets = Dex.mod('gen2').data.Learnsets;
-	for (const id in G2Learnsets) {
-		const learnset = G2Learnsets[id].learnset;
-		for (const moveid in learnset) {
-			const gens = learnset[moveid].map(x => Number(x[0]));
-			const minGen = Math.min(...gens);
-			if (!learnsets[id]) {
-				throw new Error(`${id} has a Gen 2 learnset but not a modern learnset`);
-			}
-			if (!learnsets[id][moveid]) learnsets[id][moveid] = '';
-			if (minGen === 2) learnsets[id][moveid] = '2' + learnsets[id][moveid];
-			if (minGen === 1) learnsets[id][moveid] = '12' + learnsets[id][moveid];
-		}
-	}
-	const LGLearnsets = Dex.mod('letsgo').data.Learnsets;
-	for (const id in LGLearnsets) {
-		const species = Dex.mod('letsgo').getSpecies(id);
-		const baseSpecies = Dex.mod('letsgo').getSpecies(species.baseSpecies);
-		const validNum = (baseSpecies.num <= 151 && baseSpecies.num >= 1) || [808, 809].includes(baseSpecies.num);
-		if (!validNum) continue;
-		if (species.forme && !['Alola', 'Mega', 'Mega-X', 'Mega-Y', 'Starter'].includes(species.forme)) continue;
-		const learnset = LGLearnsets[id].learnset;
-		BattleTeambuilderTable['letsgo'].learnsets[id] = {};
-		for (const moveid in learnset) {
-			BattleTeambuilderTable['letsgo'].learnsets[id][moveid] = '7';
-		}
-	}
+	//const G2Learnsets = Dex.mod('gen2').data.Learnsets;
+	//for (const id in G2Learnsets) {
+	//	const learnset = G2Learnsets[id].learnset;
+	//	for (const moveid in learnset) {
+	//		const gens = learnset[moveid].map(x => Number(x[0]));
+	//		const minGen = Math.min(...gens);
+	//		if (!learnsets[id]) {
+	//			throw new Error(`${id} has a Gen 2 learnset but not a modern learnset`);
+	//		}
+	//		if (!learnsets[id][moveid]) learnsets[id][moveid] = '';
+	//		if (minGen === 2) learnsets[id][moveid] = '2' + learnsets[id][moveid];
+	//		if (minGen === 1) learnsets[id][moveid] = '12' + learnsets[id][moveid];
+	//	}
+	//}
+	//const LGLearnsets = Dex.mod('letsgo').data.Learnsets;
+	//for (const id in LGLearnsets) {
+	//	const species = Dex.mod('letsgo').getSpecies(id);
+	//	const baseSpecies = Dex.mod('letsgo').getSpecies(species.baseSpecies);
+	//	const validNum = (baseSpecies.num <= 151 && baseSpecies.num >= 1) || [808, 809].includes(baseSpecies.num);
+	//	if (!validNum) continue;
+	//	if (species.forme && !['Alola', 'Mega', 'Mega-X', 'Mega-Y', 'Starter'].includes(species.forme)) continue;
+	//	const learnset = LGLearnsets[id].learnset;
+	//	BattleTeambuilderTable['letsgo'].learnsets[id] = {};
+	//	for (const moveid in learnset) {
+	//		BattleTeambuilderTable['letsgo'].learnsets[id][moveid] = '7';
+	//	}
+	//}
 
 	//
 	// Past gen table
 	//
 
-	for (const genNum of [7, 6, 5, 4, 3, 2, 1]) {
+	//for (const genNum of [7, 6, 5, 4, 3, 2, 1]) {
+	for (const genNum of [7]) {
 		const gen = 'gen' + genNum;
 		const genData = Dex.mod(gen).data;
 		const nextGenData = Dex.mod('gen' + (genNum + 1)).data;
